@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URL;
@@ -19,17 +20,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class DnsMadeEasy {
+	static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
 	String user = "", pass = "", id = "", lastIP = "";
 	int minutes = 30;
 	final File configFile = new File(System.getProperty("user.home"), ".dnsmadeeasy/config.txt");
-	final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	public DnsMadeEasy () throws IOException {
 		loadConfig();
 
+		log("Started.", null);
 		new Timer("Timer").schedule(new TimerTask() {
 			public void run () {
-				System.out.print(dateFormat.format(new Date()) + ", Started.");
 				try {
 					update(user, pass, id);
 				} catch (IOException ex) {
@@ -37,33 +39,28 @@ public class DnsMadeEasy {
 				}
 			}
 		}, 0, minutes * 60 * 1000);
-
-		// Don't return so service isn't terminated.
-		while (true) {
-			synchronized (this) {
-				try {
-					wait();
-				} catch (InterruptedException ignored) {
-				}
-			}
-		}
 	}
 
 	void update (String user, String pass, String id) throws IOException {
-		String newIP = read("http://www.dnsmadeeasy.com/myip.jsp");
+		String newIP;
+		try {
+			newIP = http("http://www.dnsmadeeasy.com/myip.jsp");
+		} catch (IOException ex) {
+			log("Error obtaining IP.", ex);
+			return;
+		}
 		if (newIP.equals(lastIP)) return;
 
-		System.out.print(dateFormat.format(new Date()) + ", " + newIP + ", ");
-		String result = read("http://www.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id
+		String result = http("http://www.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id
 			+ "&ip=" + newIP);
-		System.out.println(result);
+		log(newIP + ", " + result, null);
 		if (result.equals("success")) {
 			lastIP = newIP;
 			saveConfig();
 		}
 	}
 
-	String read (String url) throws IOException {
+	String http (String url) throws IOException {
 		InputStreamReader reader = new InputStreamReader(new URL(url).openStream());
 		StringWriter writer = new StringWriter(128);
 		char[] buffer = new char[1024];
@@ -134,7 +131,16 @@ public class DnsMadeEasy {
 		}
 	}
 
-	static public void main (final String[] args) throws Exception {
+	static void log (String message, Throwable ex) {
+		if (ex != null) {
+			StringWriter buffer = new StringWriter(1024);
+			ex.printStackTrace(new PrintWriter(buffer));
+			message += "\n" + buffer.toString();
+		}
+		System.out.println(dateFormat.format(new Date()) + " " + message);
+	}
+
+	static public void main (String[] args) throws Exception {
 		try {
 			File dir = new File(System.getProperty("user.home"), ".dnsmadeeasy");
 			dir.mkdirs();
@@ -142,14 +148,12 @@ public class DnsMadeEasy {
 			System.setOut(new PrintStream(new MultiplexOutputStream(System.out, logFile), true));
 			System.setErr(new PrintStream(new MultiplexOutputStream(System.err, logFile), true));
 		} catch (Throwable ex) {
-			System.out.println("Unable to write log file.");
-			ex.printStackTrace();
+			log("Unable to write log file.", ex);
 		}
 
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException (Thread thread, Throwable ex) {
-				ex.printStackTrace();
-				System.out.println("Uncaught exception, exiting.");
+				log("Uncaught exception, exiting.", ex);
 				System.exit(0);
 			}
 		});
