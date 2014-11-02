@@ -2,6 +2,14 @@
 
 This is a simple tool that periodically updates your IP for DnsMadeEasy's dynamic DNS when your IP changes. A Windows EXE file is provided, though the tool is written in Java and can be run on any desktop OS.
 
+## Download
+
+Download the latest version here:
+
+[Download DnsMadeEasy](https://github.com/EsotericSoftware/dnsmadeeasy/releases)
+
+There is no installation, only an EXE and JAR file. Windows users only need the EXE file and run it in the usual ways. Other OS users only need the JAR file and run it using `java -jar DnsMadeEasy.jar`.
+
 ## Setup
 
 When run the first time, the tool creates a `~/.dnsmadeeasy/config.txt` file containing:
