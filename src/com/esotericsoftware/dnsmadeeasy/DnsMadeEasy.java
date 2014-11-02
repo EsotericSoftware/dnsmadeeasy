@@ -29,7 +29,7 @@ public class DnsMadeEasy {
 
 		new Timer("Timer").schedule(new TimerTask() {
 			public void run () {
-				System.out.print("Started.");
+				System.out.print(dateFormat.format(new Date()) + ", Started.");
 				try {
 					update(user, pass, id);
 				} catch (IOException ex) {
