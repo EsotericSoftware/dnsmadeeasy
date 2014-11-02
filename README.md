@@ -8,7 +8,7 @@ Download the latest version here:
 
 [Download DnsMadeEasy](https://github.com/EsotericSoftware/dnsmadeeasy/releases)
 
-There is no installation, only an EXE and JAR file. Windows users only need the EXE file and run it in the usual ways. Other OS users only need the JAR file and run it using `java -jar DnsMadeEasy.jar`.
+There is no installation, only an EXE and JAR file. Windows users only need the EXE file and run it in the usual ways. Other OS users only need the JAR file and run it using `java -jar dnsmadeeasy.jar`.
 
 ## Setup
 
