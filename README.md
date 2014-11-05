@@ -1,6 +1,6 @@
 # DnsMadeEasy DNS Update
 
-This is a simple tool that periodically updates your IP when it changes for [DnsMadeEasy](http://www.dnsmadeeasy.com/)'s dynamic DNS. A Windows EXE file is provided, though the tool is written in Java and can be run on any desktop OS.
+This is a simple tool that periodically updates your IP when it changes for [DnsMadeEasy](http://www.dnsmadeeasy.com/)'s dynamic DNS. An EXE file is provided for Windows users and a JAR file for Mac/Linux.
 
 ## Download
 
