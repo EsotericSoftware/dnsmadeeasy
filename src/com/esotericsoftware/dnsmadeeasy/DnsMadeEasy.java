@@ -44,14 +44,14 @@ public class DnsMadeEasy {
 	void update (String user, String pass, String id) throws IOException {
 		String newIP;
 		try {
-			newIP = http("http://www.dnsmadeeasy.com/myip.jsp");
+			newIP = http("http://myip.dnsmadeeasy.com");
 		} catch (IOException ex) {
 			log("Error obtaining IP.", ex);
 			return;
 		}
 		if (newIP.equals(lastIP)) return;
 
-		String result = http("http://www.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id
+		String result = http("http://cp.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id
 			+ "&ip=" + newIP);
 		log(newIP + ", " + result, null);
 		if (result.equals("success")) {
