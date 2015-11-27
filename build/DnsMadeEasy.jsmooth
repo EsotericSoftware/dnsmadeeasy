@@ -6,7 +6,6 @@
 <JVMSearchPath>registry</JVMSearchPath>
 <JVMSearchPath>exepath</JVMSearchPath>
 <JVMSearchPath>jview</JVMSearchPath>
-<arguments></arguments>
 <embeddedJar>true</embeddedJar>
 <executableName>DnsMadeEasy.exe</executableName>
 <initialMemoryHeap>2097152</initialMemoryHeap>
@@ -40,4 +39,6 @@
 <key>Debug</key>
 <value>0</value>
 </skeletonProperties>
+<uacRequireAdmin>false</uacRequireAdmin>
+<uacRequireAdministrator>0</uacRequireAdministrator>
 </jsmoothproject>
