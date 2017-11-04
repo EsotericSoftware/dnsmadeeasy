@@ -20,9 +20,10 @@ Password:
 Record ID: 
 Minutes: 30
 Last IP: 
+Exit: false
 ```
 
-`User` and `Password` are your DnsMadeEasy credentials. You may optionally configure DnsMadeEasy to have a password per record, so you don't need to use your account password. `Record ID` identifies the record to update. `Minutes` is the number of minutes between IP checks. `Last IP` does not need to be set manually.
+`User` and `Password` are your DnsMadeEasy credentials. You may optionally configure DnsMadeEasy to have a password per record, so you don't need to use your account password. `Record ID` identifies the record to update. `Minutes` is the number of minutes between IP checks. `Last IP` does not need to be set manually. If `Exit` is true, the program does not stay running. It will check the IP and update if needed, then exit.
 
 After saving the `config.txt` file, the DnsMadeEasy tool must be restarted. On Windows the tool runs in the background and only a single instance is allowed, so use Task Manager to end the task before starting it again.
 

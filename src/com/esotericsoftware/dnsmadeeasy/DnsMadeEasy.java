@@ -24,19 +24,21 @@ public class DnsMadeEasy {
 
 	String user = "", pass = "", id = "", lastIP = "";
 	int minutes = 30;
+	boolean exit;
 	final File configFile = new File(System.getProperty("user.home"), ".dnsmadeeasy/config.txt");
 
 	public DnsMadeEasy () throws IOException {
-		loadConfig();
-
 		log("Started.", null);
+		loadConfig();
 		new Timer("Timer").schedule(new TimerTask() {
 			public void run () {
 				try {
+					loadConfig();
 					update(user, pass, id);
 				} catch (IOException ex) {
-					ex.printStackTrace();
+					log("Error updating.", ex);
 				}
+				if (exit) System.exit(0);
 			}
 		}, 0, minutes * 60 * 1000);
 	}
@@ -51,8 +53,8 @@ public class DnsMadeEasy {
 		}
 		if (newIP.equals(lastIP)) return;
 
-		String result = http("http://cp.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id
-			+ "&ip=" + newIP);
+		String result = http(
+			"http://cp.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id + "&ip=" + newIP);
 		log(newIP + ", " + result, null);
 		if (result.equals("success")) {
 			lastIP = newIP;
@@ -78,7 +80,8 @@ public class DnsMadeEasy {
 		writer.write("Password: " + pass + "\r\n");
 		writer.write("Record ID: " + id + "\r\n");
 		writer.write("Minutes: " + minutes + "\r\n");
-		writer.write("Last IP: " + lastIP);
+		writer.write("Last IP: " + lastIP + "\r\n");
+		writer.write("Exit: " + exit);
 		writer.close();
 	}
 
@@ -91,6 +94,7 @@ public class DnsMadeEasy {
 			id = value(reader.readLine());
 			minutes = Integer.parseInt(value(reader.readLine()));
 			lastIP = value(reader.readLine());
+			exit = Boolean.parseBoolean(value(reader.readLine()));
 		} catch (Exception ex) {
 			throw new RuntimeException("Error reading config file: " + configFile.getAbsolutePath(), ex);
 		}
