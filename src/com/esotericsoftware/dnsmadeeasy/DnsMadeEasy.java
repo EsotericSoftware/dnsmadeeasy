@@ -75,6 +75,7 @@ public class DnsMadeEasy {
 	}
 
 	void saveConfig () throws IOException {
+		System.out.println("Saving: " + configFile.getAbsolutePath());
 		FileWriter writer = new FileWriter(configFile);
 		writer.write("User: " + user + "\r\n");
 		writer.write("Password: " + pass + "\r\n");
