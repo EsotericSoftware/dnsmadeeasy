@@ -54,7 +54,7 @@ public class DnsMadeEasy {
 		if (newIP.equals(lastIP)) return;
 
 		String result = http(
-			"http://cp.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id + "&ip=" + newIP);
+			"https://cp.dnsmadeeasy.com/servlet/updateip?username=" + user + "&password=" + pass + "&id=" + id + "&ip=" + newIP);
 		log(newIP + ", " + result, null);
 		if (result.equals("success")) {
 			lastIP = newIP;
